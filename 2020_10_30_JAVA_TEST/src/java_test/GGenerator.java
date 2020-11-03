@@ -195,6 +195,17 @@ class GroupManager {
 	MyList	rawDataList; 	// 학생 정보 객체(StdInfo)들을 저장하는 리스트
 	// 멤버변수, 멤버메서드 추가 가능 : 예) 여학생 객체 저장 MyList 추가
 	
+	MyList femaleDataList;			// 여학생 객체
+	MyList maleDataList;				// 남학생 객체
+	
+	StdInfo[] femaleStdInfo;
+	StdInfo[] maleStdInfo; 
+	
+	int femaleStdNum = 0;			// 여학생 수
+	int maleStdNum;						// 남학생 수
+	
+	MyList[] randomGroup;			// 그룹
+	
 	// 생성자
 	GroupManager() {
 		// rawDataList 리스트에 학생(StdInfo)객체 입력
@@ -208,35 +219,86 @@ class GroupManager {
 			RawData data = new RawData();
 			StdInfo[] studentInfo = new StdInfo[studentNum];
 			
+			// 여학생 수 카운트
+			for(int i = 0 ; i < studentNum ; i++) {
+				if(data.m_stdGender[i] == "여") {
+					femaleStdNum += 1;
+				}
+			}
+			// 남학생 수
+			maleStdNum = studentNum - femaleStdNum;
+			
+			femaleStdInfo = new StdInfo[femaleStdNum];
+			maleStdInfo = new StdInfo[maleStdNum];
+			int tempMaleNum = 0;
+			int tempFemaleNum = 0;
+			
 			// 학생 객체에 RawData 값 대입 시켜 학생 객체들을 만든다.
 			for(int i = 0 ; i < studentNum ; i++) {
 				studentInfo[i] = new StdInfo(data.m_stdId[i], data.m_stdName[i], data.m_stdGrade[i], data.m_stdGender[i]);
+				if(data.m_stdGender[i] == "남") {
+					// 남학생 객체 
+					maleStdInfo[tempMaleNum] = new StdInfo(data.m_stdId[i], data.m_stdName[i], data.m_stdGrade[i], data.m_stdGender[i]);
+					tempMaleNum++;
+				} else {
+					// 여학생 객체 
+					femaleStdInfo[tempFemaleNum] = new StdInfo(data.m_stdId[i], data.m_stdName[i], data.m_stdGrade[i], data.m_stdGender[i]);
+					tempFemaleNum++;
+				}
 			}
 			
-			// LinkedList
-			rawDataList = new MyList();
+			tempMaleNum = 0;
+			tempFemaleNum = 0;
+			
+			rawDataList = new MyList();				// 전체 학생 LinkedList
+			
+			maleDataList = new MyList();			// 남학생 LinkedList
+			femaleDataList = new MyList();		// 여학생 LinkedList
+			
 			for(int i = 0 ; i < studentNum ; i++) {
 				// LinkedList 로 학생 객체들을 이어 붙인다.
 				rawDataList.add(studentInfo[i]);
+				
+				if(data.m_stdGender[i] == "남") {
+					maleDataList.add(maleStdInfo[tempMaleNum]);
+					tempMaleNum++;
+				} else {
+					femaleDataList.add(femaleStdInfo[tempFemaleNum]);
+					tempFemaleNum++;
+				}
 			}
+			
 			
 		//--------------------------------------------------------------- 결과 값 ----------------------------------------------------------------------------------------
 		// 리스트 rawDataList에 입력 된 학생 정보 화면에 출력
-		PrtStdList(studentInfo);
-		
-		// 입력한 학번과 동일한 학생의 객체 반환
-		// getStdById()      <- 괄호  안의 값을 변경하면 객체 바꿔 올 수 있음
-		System.out.printf("입력한 학번과 동일한 학생의 학번 : %s, 이름 : %s\n",rawDataList.getStdById("1").getId(), rawDataList.getStdById("1").getName());
-		// 입력한 index에 해당하는 학생 객체 반환
-		System.out.printf("입력한 index에 해당하는 학생의 학번 : %s, 이름 : %s\n", rawDataList.get(0).getId(),  rawDataList.get(0).getName());
-		// 입력한 index에 해당하는 학생 객체 삭제하고 반환
-		System.out.printf("입력한 index에 해당하는 학생의 이름 : %s\n", rawDataList.remove(1).getName() );
-		// 여학생 수
-		System.out.printf("전체 여학생 수 : %d\n", rawDataList.sizeOfFemaleStd());
-		// 남학생 수
-		// 위에서 remove 함수를 한 번 사용해서 남학생 수가 1 줄어듬
-		System.out.printf("전체 남학생 수 : %d\n", rawDataList.sizeOfMaleStd());
+//		PrtStdList(studentInfo);
+//		
+//		// 입력한 학번과 동일한 학생의 객체 반환
+//		// getStdById()      <- 괄호  안의 값을 변경하면 객체 바꿔 올 수 있음
+//		System.out.printf("입력한 학번과 동일한 학생의 학번 : %s, 이름 : %s\n",rawDataList.getStdById("1").getId(), rawDataList.getStdById("1").getName());
+//		// 입력한 index에 해당하는 학생 객체 반환
+//		System.out.printf("입력한 index에 해당하는 학생의 학번 : %s, 이름 : %s\n", rawDataList.get(0).getId(),  rawDataList.get(0).getName());
+//		// 입력한 index에 해당하는 학생 객체 삭제하고 반환
+//		System.out.printf("입력한 index에 해당하는 학생의 이름 : %s\n", rawDataList.remove(1).getName() );
+//		// 여학생 수
+//		System.out.printf("전체 여학생 수 : %d\n", rawDataList.sizeOfFemaleStd());
+//		// 남학생 수
+//		// 위에서 remove 함수를 한 번 사용해서 남학생 수가 1 줄어듬
+//		System.out.printf("전체 남학생 수 : %d\n", rawDataList.sizeOfMaleStd());
 		//---------------------------------------------------------------------------------------------------------------------------------------------------------------
+			
+			for(int i = 0 ; i < tempMaleNum ; i++) {
+				System.out.printf("%d) %s, %s, %s ", i+1, maleStdInfo[i].getName(), maleStdInfo[i].getId(), maleStdInfo[i].getGender());
+				System.out.println(maleStdInfo[i].getGrade() + "\n");
+			}
+			for(int i = 0 ; i < tempFemaleNum ; i++) {
+				System.out.printf("%d) %s, %s, %s ", i+1, femaleStdInfo[i].getName(), femaleStdInfo[i].getId(), femaleStdInfo[i].getGender());
+				System.out.println(femaleStdInfo[i].getGrade() + "\n");
+			}
+			
+			System.out.println("--------------------------------------");
+			
+			
 	}
 	
 	
@@ -258,7 +320,17 @@ class GroupManager {
 		Scanner scan = new Scanner(System.in);
 		System.out.printf("생성할 그룹의 수를 입력하여 주세요 : ");
 		int groupNum = scan.nextInt();
-		System.out.printf("입력한 그룹의 수 : %d", groupNum);
+		System.out.printf("입력한 그룹의 수 : %d\n", groupNum);
+		
+		int randomValue = (int)(Math.random()*groupNum);
+		System.out.println("랜덤 밸류 : " + randomValue);
+		
+//		randomGroup = new MyList[groupNum];				// 사용자가 입력한 그룹 수 만큼 그룹 생성
+//		
+//		for(int i = 0 ; i < groupNum ; i++) {
+//			randomGroup[i].add(femaleStdInfo[0]);
+//		}
+		
 
 		// 아래 규칙을 적용하여 그룹 생성
 		// 1) 남학생 중 성적 순으로 각 그룹에 랜덤하게 배정 :    
