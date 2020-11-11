@@ -70,7 +70,9 @@ public class makeQueue {
 		myQ.enqueue(11);
 		myQ.enqueue(22);
 		myQ.enqueue(33);
+		System.out.println(myQ);
 		myQ.dequeue();
+		System.out.println(myQ);
 		myQ.enqueue(44);
 		System.out.println(myQ);
 	}

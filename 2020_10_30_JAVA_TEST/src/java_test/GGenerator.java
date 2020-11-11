@@ -204,7 +204,7 @@ class GroupManager {
 	int femaleStdNum = 0;			// 여학생 수
 	int maleStdNum;						// 남학생 수
 	
-	MyList[] randomGroup;			// 그룹
+//	MyList[] randomGroup;			// 그룹
 	
 	// 생성자
 	GroupManager() {
@@ -230,8 +230,8 @@ class GroupManager {
 			
 			femaleStdInfo = new StdInfo[femaleStdNum];
 			maleStdInfo = new StdInfo[maleStdNum];
-			int tempMaleNum = 0;
-			int tempFemaleNum = 0;
+			int tempMaleNum = 0;			// 임시 남학생 수
+			int tempFemaleNum = 0;		// 임시 여학생 수
 			
 			// 학생 객체에 RawData 값 대입 시켜 학생 객체들을 만든다.
 			for(int i = 0 ; i < studentNum ; i++) {
@@ -269,7 +269,7 @@ class GroupManager {
 			}
 			
 			
-		//--------------------------------------------------------------- 결과 값 ----------------------------------------------------------------------------------------
+		//--------------------------------------------------------------- TEST VALUE ----------------------------------------------------------------------------------------
 		// 리스트 rawDataList에 입력 된 학생 정보 화면에 출력
 //		PrtStdList(studentInfo);
 //		
@@ -283,20 +283,21 @@ class GroupManager {
 //		// 여학생 수
 //		System.out.printf("전체 여학생 수 : %d\n", rawDataList.sizeOfFemaleStd());
 //		// 남학생 수
-//		// 위에서 remove 함수를 한 번 사용해서 남학생 수가 1 줄어듬
 //		System.out.printf("전체 남학생 수 : %d\n", rawDataList.sizeOfMaleStd());
 		//---------------------------------------------------------------------------------------------------------------------------------------------------------------
 			
-			for(int i = 0 ; i < tempMaleNum ; i++) {
-				System.out.printf("%d) %s, %s, %s ", i+1, maleStdInfo[i].getName(), maleStdInfo[i].getId(), maleStdInfo[i].getGender());
-				System.out.println(maleStdInfo[i].getGrade() + "\n");
-			}
-			for(int i = 0 ; i < tempFemaleNum ; i++) {
-				System.out.printf("%d) %s, %s, %s ", i+1, femaleStdInfo[i].getName(), femaleStdInfo[i].getId(), femaleStdInfo[i].getGender());
-				System.out.println(femaleStdInfo[i].getGrade() + "\n");
-			}
 			
-			System.out.println("--------------------------------------");
+			// 남학생, 여학생 확인
+//			for(int i = 0 ; i < tempMaleNum ; i++) {
+//				System.out.printf("%d) %s, %s, %s ", i+1, maleStdInfo[i].getName(), maleStdInfo[i].getId(), maleStdInfo[i].getGender());
+//				System.out.println(maleStdInfo[i].getGrade() + "\n");
+//			}
+//			for(int i = 0 ; i < tempFemaleNum ; i++) {
+//				System.out.printf("%d) %s, %s, %s ", i+1, femaleStdInfo[i].getName(), femaleStdInfo[i].getId(), femaleStdInfo[i].getGender());
+//				System.out.println(femaleStdInfo[i].getGrade() + "\n");
+//			}
+//			
+//			System.out.println("--------------------------------------");
 			
 			
 	}
@@ -320,18 +321,114 @@ class GroupManager {
 		Scanner scan = new Scanner(System.in);
 		System.out.printf("생성할 그룹의 수를 입력하여 주세요 : ");
 		int groupNum = scan.nextInt();
-		System.out.printf("입력한 그룹의 수 : %d\n", groupNum);
 		
-		int randomValue = (int)(Math.random()*groupNum);
-		System.out.println("랜덤 밸류 : " + randomValue);
+		int[] randomValue = new int[groupNum];			// random 값
 		
-//		randomGroup = new MyList[groupNum];				// 사용자가 입력한 그룹 수 만큼 그룹 생성
-//		
-//		for(int i = 0 ; i < groupNum ; i++) {
-//			randomGroup[i].add(femaleStdInfo[0]);
-//		}
+		// 0으로 두면 비교를 할 때 예외가 있기 때문에 -1로 변경
+		for(int i = 0 ; i < groupNum ; i++) {
+			randomValue[i] = -1;
+		}
 		
+		MyList[] randomGroup = new MyList[groupNum];	// 사용자가 입력한 그룹 수 만큼 그룹 생성
+		
+		// 객체 초기화
+	    for(int i = 0; i < groupNum ; i++)
+	    	randomGroup[i] = new MyList();
+	    
+	    // 남학생을 랜덤하게 편성 후 남은 학생을 점수에 맞게 배치
+		for(int i = 0 ; i < maleStdNum / groupNum ; i++) {
+			// 랜덤 수
+			for(int k = 0 ; k < groupNum ; k++) {
+				randomValue[k] = (int)(Math.random()*groupNum);
+				for(int j = 0 ; j < groupNum ; j++) {
+					if(k != j) {
+						if(randomValue[k] == randomValue[j]) {
+							k--;
+							break;
+						}
+					}
+				}
+			}
+			// groupNum 명씩 배치
+			for(int j = 0 ; j < groupNum ; j++) {
+				randomGroup[j].add(maleDataList.get(randomValue[j]));
+			}
+			// 배치한 인원 삭제
+			for(int j = 0 ; j < groupNum ; j++) {
+				maleDataList.remove(0);
+			}
+		}
+		
+		// 남학생 그룹 별 점수
+		int[] maleScore = new int[groupNum];
+		for(int i = 0 ; i < groupNum ; i++) {
+			maleScore[i] = 0;
+			for(int j = 0 ; j < randomGroup[i].size() ; j++) {
+				maleScore[i] += randomGroup[i].get(j).getGrade();
+			}
+//			System.out.println(maleScore[i]);			// 남자 그룹 점수
+		}
+		
+		int[] compare = new int[groupNum];
+		
+		// compare배열에 순위를 매겨서 비교
+		for(int i = 0 ; i < groupNum ; i++) {
+			compare[i] = 0;
+			for(int j = 0 ; j < groupNum ; j++) {
+				if(maleScore[i] >= maleScore[j]) {
+					compare[i]++;
+				}
+			}
+		}
+		
+		// 점수가 낮은 그룹에 인원 추가
+		int tempMaleSize = maleDataList.size();
+		for(int i = 0 ; i < tempMaleSize ; i++) {
+			for(int j = 0 ; j < groupNum ; j++) {
+				if(compare[j] == i+1) {
+					randomGroup[j].add(maleDataList.remove(0));
+					break;
+				}
+			}
+		}
+		
+		// 여학생 배치
+		for(int j = 0 ; j < femaleStdNum / groupNum + 1 ; j++) {
+			for(int i = 0 ; i < groupNum ; i++) {
+				if(femaleDataList.get(0) != null) {
+					randomGroup[i].add(femaleDataList.get(0));
+				} else {
+					break;
+				}
+				femaleDataList.remove(0);
+			}
+		}
+		
+		
+		
+		// 여학생 수
+		System.out.printf("전체 여학생 수 : %d\n", rawDataList.sizeOfFemaleStd());
+		// 남학생 수
+		System.out.printf("전체 남학생 수 : %d\n", rawDataList.sizeOfMaleStd());
+		// 전체 학생 수
+		System.out.printf("전체 학생 수 : %d\n", rawDataList.size());
+		
+		System.out.println("------------------------------------------\n");
+		System.out.println("------------------------------------------\n");
+		System.out.println("\t\t조 편성 결과");
+		System.out.println("------------------------------------------\n");
+		
+		// 그룹 별 조원 확인
+			for(int j = 0 ; j < groupNum ; j++) {
+				System.out.println("------------------------------------------");
+				int i = 0;
+				while(randomGroup[j].get(i) != null) {
+					System.out.printf("%d) 학번 : %s\t이름 : %s\t성별 : %s\n", i+1, randomGroup[j].get(i).getId(),randomGroup[j].get(i).getName(), randomGroup[j].get(i).getGender());
+					i++;
+				}
+			}
 
+		
 		// 아래 규칙을 적용하여 그룹 생성
 		// 1) 남학생 중 성적 순으로 각 그룹에 랜덤하게 배정 :    
 		//    예) 생성 그룹 : 3, 성적순으로 1~3위의 학생들을 랜덤하게 1, 2, 3조에 편성

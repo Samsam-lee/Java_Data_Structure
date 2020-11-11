@@ -6,14 +6,16 @@
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
+		<item key="selection" value="femaleDataList"/>
 		<list key="findhistory">
+			<item value="femaleDataList"/>
 		</list>
 		<list key="replacehistory">
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
-		<item key="DIALOG_X_ORIGIN" value="749"/>
-		<item key="DIALOG_Y_ORIGIN" value="288"/>
+		<item key="DIALOG_X_ORIGIN" value="867"/>
+		<item key="DIALOG_Y_ORIGIN" value="239"/>
 		<item key="DIALOG_WIDTH" value="294"/>
 		<item key="DIALOG_HEIGHT" value="408"/>
 		<item key="DIALOG_FONT_NAME" value="1|.AppleSystemUIFont|11.0|0|COCOA|1|.AppleSystemUIFont"/>

@@ -12,6 +12,7 @@ class myQueue{
 		circularQ = new int[NUM_LENGTH];
 	}
 	
+	// 배열에 추가
 	void enqueue(int argValue) {
 		if(num == NUM_LENGTH) {
 			System.out.println("배열 초과");
@@ -22,6 +23,7 @@ class myQueue{
 		}
 	}
 	
+	// 삭제
 	int dequeue() {
 		if(num == 0) {
 			return Integer.MAX_VALUE;
@@ -33,6 +35,7 @@ class myQueue{
 		return tempValue;
 	}
 	
+	// size 반환
 	int getSize() {
 		return num;
 	}
