@@ -26,6 +26,7 @@ org.eclipse.egit.ui.UncommittedChangeBackgroundColor=47,47,47
 org.eclipse.egit.ui.UncommittedChangeForegroundColor=114,157,186
 org.eclipse.jdt.internal.ui.compare.JavaMergeViewer=1|NanumSquare_ac|18.0|1|COCOA|1|NanumSquare_acB;
 org.eclipse.jdt.ui.ColoredLabels.inherited=143,143,191
+org.eclipse.jdt.ui.ColoredLabels.match_highlight=206,92,0
 org.eclipse.jdt.ui.ColoredLabels.writeaccess_highlight=255,128,128
 org.eclipse.jdt.ui.Javadoc.backgroundColor=52,57,61
 org.eclipse.jdt.ui.Javadoc.foregroundColor=238,238,238
