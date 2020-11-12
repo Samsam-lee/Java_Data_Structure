@@ -11,4 +11,11 @@
 			<item value="/Users/shlee/Documents/Java/2020_11_03"/>
 		</list>
 	</section>
+	<section name="SaveAsDialogSettings">
+		<item key="DIALOG_X_ORIGIN" value="600"/>
+		<item key="DIALOG_Y_ORIGIN" value="0"/>
+		<item key="DIALOG_WIDTH" value="593"/>
+		<item key="DIALOG_HEIGHT" value="528"/>
+		<item key="DIALOG_FONT_NAME" value="1|.AppleSystemUIFont|11.0|0|COCOA|1|.AppleSystemUIFont"/>
+	</section>
 </section>
