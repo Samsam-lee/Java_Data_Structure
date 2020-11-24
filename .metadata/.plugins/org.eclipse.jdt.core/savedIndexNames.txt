@@ -1,5 +1,4 @@
 INDEX VERSION 1.131+/Users/shlee/Documents/Java/.metadata/.plugins/org.eclipse.jdt.core
-564439505.index
 4248126267.index
 2836548497.index
 978243655.index

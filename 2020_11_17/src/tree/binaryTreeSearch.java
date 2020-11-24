@@ -68,21 +68,56 @@ class BSTree{
 		return value < current.value ? containsNodeRecursive(current.left, value) : containsNodeRecursive(current.right, value);
 	}
 	// -->
+	
+	
+// 전위 순회
+	public void traversePreOrder(Node node) {
+		if(node != null) {
+			System.out.println(" " + node.value);
+			traversePreOrder(node.left);
+			traversePreOrder(node.right);
+		}
+	}
+	
+// 중위 순회
+	public void traverseInOrder(Node node) {
+		if(node != null) {
+			traverseInOrder(node.left);
+			System.out.println(" " + node.value);
+			traverseInOrder(node.right);
+		}
+	}
+	
+// 후위 순회
+	public void traversePostOrder(Node node) {
+		if(node != null) {
+			traversePostOrder(node.left);
+			traversePostOrder(node.right);
+			System.out.println(" " + node.value);
+		}
+	}
+
 }
 
 public class binaryTreeSearch {
 	public static void main(String[] args) {
 		BSTree bt = new BSTree();
 		
-		bt.add(6);																// 6
-		bt.add(4);																// 4, 6
-		bt.add(8);																// 4, 6, 8
-		bt.add(3);																// 3, 4, 6, 8
-		bt.add(5);																// 3, 4, 5, 6, 8
-		bt.add(7);																// 3, 4, 5, 6, 7, 8
-		bt.add(9);																// 3, 4, 5, 6, 7, 8, 9
+		bt.add(6);																
+		bt.add(4);																
+		bt.add(8);																
+		bt.add(3);																
+		bt.add(5);																
+		bt.add(7);																
+		bt.add(9);																
 		
-		System.out.println(bt.containsNode(8));		// true
-		System.out.println(bt.containsNode(10));	// false
+		bt.traversePreOrder(bt.root);
+		System.out.println("--------------");
+		bt.traverseInOrder(bt.root);
+		System.out.println("--------------");
+		bt.traversePostOrder(bt.root);
+		
+//		System.out.println(bt.containsNode(8));		// true
+//		System.out.println(bt.containsNode(10));	// false
 	}
 }
