@@ -1,5 +1,7 @@
 package tree;
 
+import java.util.LinkedList;
+
 // 이진 트리 노드 클래스
 class Node{
 	int value;				// 노드 값
@@ -70,6 +72,8 @@ class BSTree{
 	// -->
 	
 	
+//------------------------------------------------------------------
+// <--
 // 전위 순회
 	public void traversePreOrder(Node node) {
 		if(node != null) {
@@ -96,7 +100,82 @@ class BSTree{
 			System.out.println(" " + node.value);
 		}
 	}
-
+// -->
+	
+//------------------------------------------------------------------
+// <-- 깊이 우선 탐색 ( Breadth-First traversal )
+	public void traverseLevelOrder() {
+		if(root == null) { return;}
+		
+		// 깊이 탐색 시 노드 값을 저장할 Queue
+		LinkedList<Node> nodes = new LinkedList<Node>();
+		
+		nodes.add(root);
+		
+		// 노드 값이 없을 때 까지 반복
+		while(!nodes.isEmpty()) {
+			Node node = nodes.remove();
+			
+			System.out.println(" " + node.value);
+			
+			if(node.left != null) {
+				nodes.add(node.left);
+			}
+			
+			if(node.right != null) {
+				nodes.add(node.right);
+			}
+		}
+	}
+// -->
+//------------------------------------------------------------------
+	
+// <-- binary tree delete
+	private Node deleteRecursive(Node current, int value) {
+		// 찾는 값이 없을 경우
+		if(current == null)
+			return null;
+		
+		// 찾는 값이 있을 경우
+		if(value == current.value) {
+			// case 1: 삭제 노드가 leaf node 일 경우
+			if(current.left == null && current.right == null)
+				return null;
+			// case 2: 삭제 노드의 자식 노드가 한 개일 경우
+			if(current.right == null)
+				return current.left;
+			
+			if(current.left == null)
+				return current.right;
+			// case 3: 삭제 노드의 자식 노드가 두 개일 경우
+			int smallestValue = findSmallestValue(current.right);
+			current.value = smallestValue;
+			current.right = deleteRecursive(current.right, smallestValue);
+			return current;
+		}
+		
+		// 왼쪽 노드 순회
+		if(value < current.value) {
+			current.left = deleteRecursive(current.left, value);
+			return current;
+		}
+		
+		// 오른쪽 노드 순회
+		current.right = deleteRecursive(current.right, value);
+		return current;
+	}
+	
+	// sub tree 내 최소값
+	private int findSmallestValue(Node root) {
+		return root.left==null ? root.value : findSmallestValue(root.left);
+	}
+	
+	// binary tree 삭제 함수
+	public void delete(int value) {
+		root = deleteRecursive(root,value);
+	}
+// -->
+	
 }
 
 public class binaryTreeSearch {
@@ -109,13 +188,33 @@ public class binaryTreeSearch {
 		bt.add(3);																
 		bt.add(5);																
 		bt.add(7);																
-		bt.add(9);																
+		bt.add(9);									
 		
-		bt.traversePreOrder(bt.root);
-		System.out.println("--------------");
-		bt.traverseInOrder(bt.root);
-		System.out.println("--------------");
-		bt.traversePostOrder(bt.root);
+		
+		// 이진 트리 삭제 구현
+		bt.traverseLevelOrder();
+		System.out.println("------------");
+		bt.delete(4);
+		bt.traverseLevelOrder();
+		System.out.println("------------");
+		bt.delete(6);
+		bt.traverseLevelOrder();
+		System.out.println("------------");
+		bt.delete(7);
+		bt.traverseLevelOrder();
+		
+		
+		// 넓이 우선 탐색
+//		bt.traverseLevelOrder();
+		
+		
+		// 순회
+//		bt.traversePreOrder(bt.root);
+//		System.out.println("--------------");
+//		bt.traverseInOrder(bt.root);
+//		System.out.println("--------------");
+//		bt.traversePostOrder(bt.root);
+		
 		
 //		System.out.println(bt.containsNode(8));		// true
 //		System.out.println(bt.containsNode(10));	// false
